@@ -3,10 +3,8 @@ public:
     bool isAnagram(string s, string t) {
         map<char,int>mp;
         
-        if(s.length() < t.length()){
-            string temp = s;
-            s = t;
-            t  =temp;
+        if(s.length() != t.length()){
+          return false;
         }
         for(auto i:s){
             mp[i]++;
