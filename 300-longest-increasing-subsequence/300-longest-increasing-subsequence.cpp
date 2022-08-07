@@ -1,29 +1,26 @@
 class Solution {
 public:
     
-    int f(int curr, int prev, vector<int>&nums, vector<vector<int>>&dp)
-    {
-        if(curr == nums.size())
-            return 0;
-        
-        if(dp[curr][prev+1] != -1)
-            return dp[curr][prev+1];
-        
-        int nottake = 0 + f(curr+1, prev, nums, dp);
-        int take = 0;
-        
-        if(prev ==-1 || nums[curr]> nums[prev])
-            take = 1 + f(curr+1, curr, nums, dp);
-        
-        return dp[curr][prev+1]= max(take, nottake);
-    }
-    
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
         
-        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
         
-        return f(0,-1,nums, dp);
+        for(int i  =  n-1; i >=0 ; i--)
+        {
+            for(int j = i; j>=-1;j--)
+            {
+                    int nottake = 0 + dp[i+1][j+1];
+                    int take = 0;
+
+                    if(j ==-1 || nums[i]> nums[j])
+                        take = 1 + dp[i+1][i+1];
+
+                    dp[i][j+1]= max(take, nottake);
+            }
+        }
+        
+        return dp[0][-1+1];
         
     }
 };
