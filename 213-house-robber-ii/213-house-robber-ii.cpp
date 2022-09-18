@@ -1,26 +1,25 @@
 class Solution {
 public:
-    int func(vector<int>&v)
-    {
-        int n = v.size();
+  int robfunc(vector<int>& nums) {
+        int n = nums.size();
         
-        int prev1=v[0];
+        if(n==1)
+            return nums[0];
+        
+        int prev = nums[0];
         int prev2 = 0;
         
-        for(int i =1;i<n;i++)
+        for(int i = 1;i<n;i++)
         {
-            int take = v[i];
-              if(i>1) 
-                  take += prev2;
-            int nottake = 0 + prev1;
+                int notpick = prev;
+                int pick = nums[i] + prev2;
 
-            int curr = max(take, nottake);
-            
-            prev2 = prev1;
-            prev1 = curr;
+                int cur = max(pick, notpick);
+                prev2 = prev;
+                prev = cur;
         }
         
-        return prev1;
+        return prev;
     }
     
     int rob(vector<int>& nums) {
@@ -36,6 +35,6 @@ public:
            if(i!=n-1) nums2.push_back(nums[i]);
        }
         
-        return max(func(nums1), func(nums2));
+        return max(robfunc(nums1), robfunc(nums2));
     }
 };
