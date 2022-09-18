@@ -29,8 +29,7 @@ public:
                 if(dist[nextnode] > currdist + nextdist)
                 {
                     dist[nextnode] = currdist + nextdist;
-                
-                pq.push({dist[nextnode], nextnode});
+                    pq.push({dist[nextnode], nextnode});
                 }
                     
             }
