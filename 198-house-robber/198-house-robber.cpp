@@ -1,6 +1,6 @@
 class Solution {
 public:
-    
+    // MEMOIZED
 //     int robfunc(int idx, vector<int>& nums, vector<int>&dp)
 //     {
 //        if(idx == 0)
@@ -24,25 +24,53 @@ public:
 //         return dp[idx] = max(pick, notpick);
 //     }
     
+    
+    
+//     TABULAR
+//     int rob(vector<int>& nums) {
+//         int n = nums.size();
+        
+//         if(n==1)
+//             return nums[0];
+        
+//         vector<int>dp(n,0);
+        
+//         dp[0] = nums[0];
+//         dp[1] = max(nums[0],nums[1]);
+        
+//         for(int i = 2;i<n;i++)
+//         {
+//                 int notpick = dp[i-1];
+//                 int pick = nums[i] + dp[i-2];
+
+//                 dp[i] = max(pick, notpick);
+//         }
+        
+//         return dp[n-1];
+//     }
+    
+    
+//     SPACE OPTIMISED
+    
     int rob(vector<int>& nums) {
         int n = nums.size();
         
         if(n==1)
             return nums[0];
         
-        vector<int>dp(n,0);
+        int prev = nums[0];
+        int prev2 = 0;
         
-        dp[0] = nums[0];
-        dp[1] = max(nums[0],nums[1]);
-        
-        for(int i = 2;i<n;i++)
+        for(int i = 1;i<n;i++)
         {
-                int notpick = dp[i-1];
-                int pick = nums[i] + dp[i-2];
+                int notpick = prev;
+                int pick = nums[i] + prev2;
 
-                dp[i] = max(pick, notpick);
+                int cur = max(pick, notpick);
+                prev2 = prev;
+                prev = cur;
         }
         
-        return dp[n-1];
+        return prev;
     }
 };
