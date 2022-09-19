@@ -1,6 +1,8 @@
 class Solution {
 public:
     
+//     MEMOIZEDDDDD
+   
     int prof(int idx, int buy, vector<int>& p, vector<vector<int>> &dp)
     {
         if(idx >= p.size())
@@ -18,12 +20,29 @@ public:
             return dp[idx][buy] = max(p[idx]+ prof(idx+2, 1, p, dp), 0+ prof(idx+1, 0, p, dp ));
         }
     }
+   
     
-    int maxProfit(vector<int>& prices) {
-        int n = prices.size();
+//     TABULARRRR
+    int maxProfit(vector<int>& p) {
+        int n = p.size();
         
-        vector<vector<int>>dp(n, vector<int>(2,-1));
+        vector<vector<int>>dp(n+2, vector<int>(2,0));
         
-        return prof(0,1, prices, dp);
+        for(int idx = n-1;idx>=0;idx--)
+        {
+            for(int buy =0;buy<=1;buy++)
+            {
+                if(buy)
+                {
+                     dp[idx][buy] = max(-p[idx] + dp[idx+1][0], 0 + dp[idx+1][1]);
+                }
+                else
+                {
+                     dp[idx][buy] = max(p[idx]+ dp[idx+2][1], 0+ dp[idx+1][0]);
+                }
+            }
+        }
+        
+        return dp[0][1];
     }
 };
