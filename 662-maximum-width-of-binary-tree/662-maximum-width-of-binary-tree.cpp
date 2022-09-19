@@ -16,32 +16,36 @@ public:
             return 0;
         
         queue<pair<TreeNode*, long long int>>q;
-        q.push({root,1});
+        q.push({root, 0});
         
-        int ans = 0;
+        long long int ans = 0;
         
         while(!q.empty())
         {
-            int n = q.size();
-            long long minele = q.front().second;
-            int first, last;
+            long long int size = q.size();
+            long long int minval = q.front().second;
+            long long int first=0, last = 0;
             
-            for(int i =0;i<n;i++)
+            for(int i =0 ; i < size;i++)
             {
-                TreeNode* curr = q.front().first;
-                long long lev = q.front().second;
-                lev-=minele;
-                q.pop();
-                if(i == 0) first = lev;
-                if(i == n-1) last = lev;
+                long long int val = q.front().second - minval;
+                TreeNode* node = q.front().first;
                 
-                if(curr->left)
-                    q.push({curr->left, lev*2+1});
-                if(curr->right)
-                    q.push({curr->right, lev*2+2});
+                q.pop();
+                
+                if(i == 0)
+                    first = val;
+                if( i == size -1)
+                    last = val;
+                
+                if(node->left)
+                    q.push({node->left, 2*val+1});
+                
+                if(node->right)
+                    q.push({node->right, 2*val+2});
             }
             ans = max(ans, last-first+1);
         }
-    return ans;
+        return ans;
     }
 };
