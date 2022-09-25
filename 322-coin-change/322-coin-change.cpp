@@ -1,4 +1,6 @@
 class Solution {
+public:
+    
     const int INF = 1e9;
     int f(int n, vector<int>&coins, int amount, vector<vector<int>>&dp)
     {
