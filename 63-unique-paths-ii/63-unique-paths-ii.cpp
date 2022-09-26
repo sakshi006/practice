@@ -24,6 +24,8 @@ public:
         if(obstacleGrid[0][0]==1) return 0;
         
         vector<vector<int>>dp(n,vector<int>(m,0));
+        
+        vector<int>prev(m,0), curr(m,0);
         dp[0][0] =1;
         
         for(int i =0;i<n;i++)
@@ -42,7 +44,7 @@ public:
                         if(j>0) 
                             up = dp[i][j-1];
 
-                     dp[i][j]+=left+up;
+                     dp[i][j]=left+up;
                 }
             }
         }
