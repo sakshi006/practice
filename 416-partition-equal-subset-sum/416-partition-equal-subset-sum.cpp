@@ -1,41 +1,39 @@
 class Solution {
-public:
     
+public:
     bool canPartition(vector<int>& nums) {
+        int sum = 0, n = nums.size();
         
-        int n = nums.size();
+        for(int i = 0; i < n; i++)
+            sum+= nums[i];
         
-        int sum = 0 ;
-        for(auto it : nums)
-            sum+= it ;
-        
-        if(sum%2 !=0)
+        if(sum%2 != 0)
             return false;
         
-        
         int k = sum/2;
-        vector<vector<bool>>dp(n, vector<bool>(k+1, 0 ));
         
-        for(int i = 0 ; i < n ; i++)
-            dp[i][0] = true;
-        
-        if(nums[0]<=k)
-            dp[0][nums[0]] = true;
-        
-        for(int i =1; i < n ; i++)
-        {
-            for(int j =1; j <=k; j++)
-            {
-                bool nottake = dp[i-1][j];
-                bool take = false;
-                if(j >= nums[i])
-                    take = dp[i-1][j-nums[i]];
-                
-                dp[i][j] = take || nottake;
-            }
-        }
-        
-        return dp[n-1][k];
-    }
+         vector<vector<bool>>dp(n, vector<bool>(k+1,0));
     
+         if(nums[0]<=k)
+            dp[0][nums[0]] = true;
+
+            for(int i =0;i<n;i++)
+                dp[i][0] = true;
+
+            for(int idx = 1;idx<n;idx++)
+            {
+                for(int tar=1;tar<=k;tar++)
+                {
+                    bool pick = false;
+                    bool notpick = dp[idx-1][tar];
+                    if(tar-nums[idx] >=0)
+                        pick = dp[idx-1][tar-nums[idx]];
+
+                     dp[idx][tar] = pick || notpick;
+                }
+            }
+
+            return dp[n-1][k];
+                    
+    }
 };
