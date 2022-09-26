@@ -1,48 +1,46 @@
 class Solution {
 public:
     
-    bool dfs(int node, int parent, vector<int>&vis, vector<int>&dfsvis, vector<int>adj[])
+    bool dfs(int node, int parent, vector<int>adj[], vector<int>&vis, vector<int>&dfsvis)
     {
-        vis[node]=1;
-        dfsvis[node] =1;
+        vis[node] = 1;
+        dfsvis[node] = 1;
         
-        for(auto it: adj[node])
+        for(auto it : adj[node])
         {
             if(!vis[it])
             {
-                if(dfs(it,node,vis,dfsvis,adj))
+                if(dfs(it, node, adj,vis, dfsvis))
                     return true;
             }
-            else if(dfsvis[it])
+            else if (dfsvis[it])
                 return true;
         }
         dfsvis[node] = 0;
         return false;
     }
     
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        int n = prerequisites.size();
+    bool canFinish(int nc, vector<vector<int>>& p) {
+        vector<int>adj[nc];
         
-        vector<int>adj[numCourses+1];
-        
-        for(int i =0;i<n;i++)
+        for(auto it : p)
         {
-            int u = prerequisites[i][0];
-            int v = prerequisites[i][1];
-            
+            int u = it[0];
+            int v = it[1];
             adj[v].push_back(u);
         }
         
-        vector<int>vis(numCourses+1,0);
-        vector<int>dfsvis(numCourses+1,0);
+        vector<int>vis(nc,0);
+        vector<int>dfsvis(nc,0);
         
-        for(int i =0;i<numCourses;i++)
+        for(int i = 0; i<nc;i++)
         {
             if(!vis[i])
-                if(dfs(i,-1,vis,dfsvis,adj))
+            {
+                if(dfs(i,-1,adj,vis, dfsvis))
                     return false;
+            }
         }
-        
         return true;
     }
 };
