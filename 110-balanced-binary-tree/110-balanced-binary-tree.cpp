@@ -12,30 +12,27 @@
 class Solution {
 public:
     
-    int checkbal(TreeNode* root)
+    int f(TreeNode* root)
     {
         if(!root)
             return 0;
         
-        int lh = checkbal(root->left);
+        int lh = f(root->left);
         if(lh==-1)
             return -1;
-        int rh = checkbal(root->right);
+        int rh = f(root->right);
         if(rh ==-1)
             return -1;
-        if(abs(lh-rh) > 1)
+        
+        if(abs(lh-rh)>1)
             return -1;
         
         return max(lh,rh)+1;
-        
     }
     
     bool isBalanced(TreeNode* root) {
         if(!root)
             return true;
-        
-        if(checkbal(root)==-1)
-            return false;
-        return true;
+        return f(root) ==-1 ? false : true;
     }
 };
