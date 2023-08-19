@@ -10,53 +10,51 @@ class Solution
 	vector<vector<int>>nearest(vector<vector<int>>grid)
 	{
 	    // Code here
-	    
 	    int n = grid.size();
 	    int m = grid[0].size();
 	    
-	    vector<vector<int>>dist(n,vector<int>(m,0));
+	    queue<pair<pair<int,int>,int>>q;
+	    vector<vector<int>>ans(n,vector<int>(m,0));
 	    vector<vector<int>>vis(n,vector<int>(m,0));
 	    
-	    queue<pair<pair<int,int>,int>>q;
-	    
-	    for(int i =0;i< n;i++)
+	    for(int i = 0 ; i < n ; i++)
 	    {
-	        for(int j=0;j<m;j++)
+	        for(int j = 0; j< m ; j++)
 	        {
-	            if(grid[i][j] == 1)
+	            if(vis[i][j] == 0 && grid[i][j] == 1)
 	            {
-	                 q.push({{i,j}, 0});
-	                 vis[i][j] = 1;
+	                q.push({{i,j},0});
+	                vis[i][j] = 1;
 	            }
 	        }
 	    }
-	        
+	    
 	        int delrow[] = {-1,0,1,0};
 	        int delcol[] = {0,1,0,-1};
-	    
+	        
 	    while(!q.empty())
 	    {
-	        int row = q.front().first.first;
-	        int col = q.front().first.second;
-	        int step = q.front().second;
-	        
+	        int r = q.front().first.first;
+	        int c = q.front().first.second;
+	        int lvl = q.front().second;
 	        q.pop();
 	        
-	        dist[row][col] = step;
+	        ans[r][c] = lvl;
 	        
-	        for(int i =0;i<4;i++)
+	        for(int i = 0 ; i< 4; i++)
 	        {
-	            int nrow = row+delrow[i];
-	            int ncol = col+delcol[i];
+	            int nrow = r+delrow[i];
+	            int ncol = c+delcol[i];
 	            
-	            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol] == 0)
+	            if(nrow>=0 && nrow<n && ncol>=0 &&ncol<m && grid[nrow][ncol] == 0 && !vis[nrow][ncol])
 	            {
+	                q.push({{nrow,ncol}, lvl+1});
 	                vis[nrow][ncol] = 1;
-	                q.push({{nrow,ncol}, step+1});
 	            }
 	        }
 	    }
-	    return dist;
+	    
+	    return ans;
 	}
 };
 
