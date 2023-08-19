@@ -5,30 +5,20 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
     
-    bool bfs(int node, vector<int>&vis, vector<int> adj[])
+    bool dfs(int node, int parent, vector<int>&vis, vector<int> adj[])
     {
-        queue<pair<int,int>>q;
-        q.push({node,-1});
         vis[node] = 1;
         
-        while(!q.empty())
-        {
-            int curr = q.front().first;
-            int parent = q.front().second;
-            q.pop();
-            
-            for(auto it : adj[curr])
+            for(auto it : adj[node])
             {
                 if(vis[it] == 0)
                   {
-                      q.push({it,curr});
-                      vis[it] = 1;
+                      if(dfs(it, node, vis, adj)) return true;
                   }
                 else if(it != parent)
                   return true;
             }
-        }
-        
+    
         return false;
     }
   public:
@@ -41,7 +31,7 @@ class Solution {
         for(int i = 0 ; i < V; i ++)
         {
             if(vis[i] == 0)
-               if(bfs(i,vis,adj)) return true;
+               if(dfs(i,-1,vis,adj)) return true;
         }
       
         return false;
