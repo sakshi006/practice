@@ -7,16 +7,15 @@ using namespace std;
 // } Driver Code Ends
 // User function Template for C++
 class Solution {
-    void findtopo(int node, vector<int>&vis, stack<int>&s,vector<pair<int,int>> adj[] )
+    void dfs(int node, vector<int>&vis,  vector<pair<int,int>>adj[], stack<int>&s)
     {
-        vis[node] =1 ;
-        
-        for(auto it : adj[node])
+        vis[node] = 1;
+        for(auto it: adj[node])
         {
-            if(vis[it.first] == 0)
-               findtopo(it.first,vis,s,adj);
+            int v = it.first;
+            if(vis[v] == 0)
+              dfs(v, vis, adj,s);
         }
-        
         s.push(node);
     }
   public:
@@ -24,20 +23,21 @@ class Solution {
         // code here
         vector<pair<int,int>>adj[N];
         
-        for(int i =0;i<M;i++)
+        for(auto it: edges)
         {
-                int x = edges[i][0];
-                int y = edges[i][1];
-                int wt = edges[i][2];
-                adj[x].push_back({y,wt});
+            int u = it[0];
+            int v = it[1];
+            int wt = it[2];
+            adj[u].push_back({v,wt});
         }
         
         stack<int>s;
         vector<int>vis(N,0);
-        for(int i=0;i<N;i++)
+        
+        for(int i =0;i<N;i++)
         {
             if(vis[i] == 0)
-              findtopo(i,vis,s,adj);
+              dfs(i,vis,adj,s);
         }
         
         vector<int>dist(N,1e9);
@@ -45,24 +45,22 @@ class Solution {
         
         while(!s.empty())
         {
-            int node = s.top();
+            int curr = s.top();
             s.pop();
             
-            if(dist[node] != 1e9)
+            for(auto it:adj[curr])
             {
-                for(auto it : adj[node])
-                {
-                    int v = it.first;
-                    int wt = it.second;
-                    if(dist[node] + wt < dist[v])
-                       dist[v ] = dist[node] + wt;
-                }
+                int node = it.first;
+                int wt = it.second;
+                
+                if(dist[node] > dist[curr]+wt)
+                   dist[node] = dist[curr]+wt;
             }
         }
-        for(int i =0;i<dist.size(); i++)
+        for(int i =0;i<N;i++)
         {
-            if( dist[i] == 1e9)
-               dist[i] = -1;
+            if(dist[i] == 1e9)
+              dist[i] = -1;
         }
         return dist;
     }
