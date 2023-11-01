@@ -7,32 +7,36 @@ using namespace std;
 //User function Template for C++
 
 class Solution {
-    
-    void dfs(int node, vector<int>&vis, vector<int>adj[])
+  public:
+  
+    void dfs(int node, vector<int>adj[], vector<int>&vis)
     {
         vis[node] = 1;
+        // cout<<node<<" this i snode"<<endl;
         for(auto it : adj[node])
         {
             if(vis[it] == 0)
-              dfs(it, vis, adj);
+              {
+                //   cout<<"THIS IS CALLED => "<<it<<endl;
+                  dfs(it,adj,vis);
+              }
         }
+        return;
     }
-  public:
-    int numProvinces(vector<vector<int>> adj, int V) {
+    
+    int numProvinces(vector<vector<int>> a, int V) {
         // code here
-        vector<int>adjlist[V+1];
+        int n = a.size(), m = a[0].size();
+        vector<int>adj[V+1];
         
-        int n = adj.size();
-        int m = adj[0].size();
-        
-        for(int i = 0 ;i < n ; i++)
+        for(int i=0;i<n;i++)
         {
-            for(int j = 0 ; j <m ; j ++)
+            for(int j=0;j<m;j++)
             {
-                if(i!=j && adj[i][j] == 1)
+                if(i!=j && a[i][j] == 1)
                 {
-                    adjlist[i].push_back(j);
-                    adjlist[j].push_back(i);
+                    adj[i+1].push_back(j+1);
+                    adj[j+1].push_back(i+1);
                 }
             }
         }
@@ -40,12 +44,13 @@ class Solution {
         int ct = 0;
         vector<int>vis(V+1,0);
         
-        for(int i = 0 ; i < V; i++)
+        for(int i=1;i<=V;i++)
         {
-            if(vis[i]== 0)
+            if(vis[i] == 0)
             {
-                dfs(i,vis, adjlist);
                 ct++;
+                // cout<<"dfs is called for "<<i<<endl;
+                dfs(i,adj, vis);
             }
         }
         
